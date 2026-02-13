@@ -1,43 +1,30 @@
-# InclusiveScans
+# GPU-Accelerated Inclusive Scan in Julia
 
-[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://QEDjl-project.github.io/InclusiveScans.jl/stable)
-[![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://QEDjl-project.github.io/InclusiveScans.jl/dev)
-[![Build Status](https://github.com/QEDjl-project/InclusiveScans.jl/workflows/Test/badge.svg)](https://github.com/QEDjl-project/InclusiveScans.jl/actions)
-[![Test workflow status](https://github.com/QEDjl-project/InclusiveScans.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/QEDjl-project/InclusiveScans.jl/actions/workflows/Test.yml?query=branch%3Amain)
-[![Lint workflow Status](https://github.com/QEDjl-project/InclusiveScans.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/QEDjl-project/InclusiveScans.jl/actions/workflows/Lint.yml?query=branch%3Amain)
-[![Docs workflow Status](https://github.com/QEDjl-project/InclusiveScans.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/QEDjl-project/InclusiveScans.jl/actions/workflows/Docs.yml?query=branch%3Amain)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
-[![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JuliaBesties/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/JuliaBesties/BestieTemplate.jl)
+This repository showcases a high-performance implementation of the **Inclusive Scan** algorithm (Blelloch Scan) developed for the **QEDjl-project** ecosystem. The project was completed as part of a Master's level curriculum.
 
-## Running Tests
+## Technical Contribution
 
-You can run the provided test suite to ensure that the package is functioning correctly.
-You need to open your julia REPL within the project's directory
+This implementation focuses on leveraging **CUDA.jl** for efficient parallel prefix sum operations on NVIDIA GPUs.
 
-```bash
-julia --project=@.
-```
+### Core Features
+* [cite_start]**Blelloch Scan Pattern:** Efficient two-phase (Up-sweep and Down-sweep) implementation in CUDA kernels[cite: 11, 13, 14].
+* [cite_start]**Dynamic Shared Memory:** Optimized data movement using `CuDynamicSharedArray` to maximize throughput[cite: 9, 17].
+* [cite_start]**Scalability:** Support for large arrays through block-based scanning and increment addition[cite: 16, 18, 19].
 
-In the Julia REPL, you need to enter the pkg mode and run the tests:
+### Authors & Roles
+While I am the primary maintainer of this repository, the project was a collaborative effort with **Bulat Fakhrutdinov**:
 
+* [cite_start]**Timur Gildeev (@gtimuri):** Developed the core CUDA kernels (`_scanBlockKernel!`, `_addIncrementsKernel!`) and the high-level `largeArrayScanInclusive!` interface[cite: 9, 16, 17].
+* [cite_start]**Bulat Fakhrutdinov (@Korjick):** Engineered the testing suite and validation logic to ensure numerical stability and performance[cite: 6, 7, 8].
+
+## Project Structure
+* [cite_start]`src/InclusiveScans.jl`: Core algorithm and GPU kernels[cite: 9].
+* [cite_start]`test/test-basic-test.jl`: Validation suite comparing GPU results with CPU references[cite: 6].
+* `Project.toml`: Project dependencies (CUDA, Random) and compatibility.
+
+## Verification
+To run the tests and verify the implementation:
 ```julia-repl
-julia> # press ]
+julia --project=@.
 pkg> activate .
 pkg> test
-```
-
-This will execute the test suite and display the results, indicating whether the package functions as expected.
-
-## Usage
-
-To use the package in your Julia code, simply import it:
-
-```julia-repl
-using InclusiveScans
-```
-
-For detailed documentation on available functions and examples, please refer to the package documentation or source code.
-
-## Contributing
-
-If you want to make contributions of any kind, please first that a look into our [contributing guide directly on GitHub](docs/src/90-contributing.md) or the [contributing page on the website](https://QEDjl-project.github.io/InclusiveScans.jl/dev/90-contributing/)
